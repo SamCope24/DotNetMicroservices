@@ -1,4 +1,7 @@
 using Catalog.Service.Dtos;
+using Catalog.Service.Entities;
+using Catalog.Service.Extensions;
+using Catalog.Service.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catlog.Service.Controllers
@@ -7,68 +10,67 @@ namespace Catlog.Service.Controllers
     [Route("items")]
     public class ItemsController : ControllerBase
     {
-        private static readonly List<ItemDto> _items = new()
-        {
-            new ItemDto(Guid.NewGuid(), "Potion", "Restores a small amount of HP", 5, DateTimeOffset.UtcNow),
-            new ItemDto(Guid.NewGuid(), "Antidote", "Cures poison", 5, DateTimeOffset.UtcNow),
-            new ItemDto(Guid.NewGuid(), "Bronze Sword", "Deals a small amount of damage", 5, DateTimeOffset.UtcNow),
-        };
+        private readonly ItemsRepository _itemsRepository = new();
 
         // GET /items
         [HttpGet]
-        public IEnumerable<ItemDto> Get()
+        public async Task<IEnumerable<ItemDto>> GetAsync()
         {
-            return _items;
+            return (await _itemsRepository.GetAllAsync()).Select(item => item.AsDto());
         }
 
         // GET /items/{id}
         [HttpGet("{id}")]
-        public ActionResult<ItemDto> GetById(Guid id)
+        public async Task<ActionResult<ItemDto>> GetByIdAsync(Guid id)
         {
-            var item = _items.SingleOrDefault(item => item.Id == id);
+            var item =  await _itemsRepository.GetAsync(id);
 
-            return item ?? (ActionResult<ItemDto>)NotFound();
+            return item.AsDto() ?? (ActionResult<ItemDto>)NotFound();
         }
 
         // POST /items
         [HttpPost]
-        public ActionResult<ItemDto> Post(CreateItemDto createItemDto)
+        public async Task<ActionResult<ItemDto>> PostAsync(CreateItemDto createItemDto)
         {
-            var item = new ItemDto(Guid.NewGuid(), createItemDto.Name, createItemDto.Description, createItemDto.Price, DateTimeOffset.UtcNow);
-            _items.Add(item);
+            var item = new Item()
+            {
+                Name = createItemDto.Name,
+                Description = createItemDto.Description,
+                Price = createItemDto.Price,
+                CreatedDate = DateTimeOffset.UtcNow
+            };
 
-            return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
+            await _itemsRepository.CreateAsync(item);
+
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = item.Id }, item);
         }
 
         // PUT /items/{id}
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, UpdateItemDto updateItemDto)
+        public async Task<IActionResult> Put(Guid id, UpdateItemDto updateItemDto)
         {
-            var existingItem = _items.SingleOrDefault(item => item.Id == id);
+            var existingItem = await _itemsRepository.GetAsync(id);
 
             if (existingItem is null) return NotFound();
 
-            var updateItem = existingItem with {
-                Name = updateItemDto.Name,
-                Description = updateItemDto.Description,
-                Price = updateItemDto.Price
-            };
+            existingItem.Name = updateItemDto.Name;
+            existingItem.Description = updateItemDto.Description;
+            existingItem.Price = updateItemDto.Price;
 
-            var index = _items.FindIndex(existingItem => existingItem.Id == id);
-            _items[index] = updateItem;
+            await _itemsRepository.UpdateAsync(existingItem);
 
             return NoContent();
         }
 
         // DELETE /items/{id}
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            var index = _items.FindIndex(existingItem => existingItem.Id == id);
+            var existingItem = await _itemsRepository.GetAsync(id);
 
-            if (index < 0) return NotFound();
+            if (existingItem is null) return NotFound();
 
-            _items.RemoveAt(index);
+            await _itemsRepository.RemoveAsync(existingItem.Id);
 
             return NoContent();
         }

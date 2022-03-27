@@ -1,7 +1,7 @@
 using MongoDB.Driver;
 using Catalog.Service.Entities;
 
-namespace Catlog.Service.Repositories
+namespace Catalog.Service.Repositories
 {
     public class ItemsRepository
     {
