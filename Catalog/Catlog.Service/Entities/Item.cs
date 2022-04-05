@@ -1,5 +1,3 @@
-using System;
-
 namespace Catalog.Service.Entities
 {
     public class Item
