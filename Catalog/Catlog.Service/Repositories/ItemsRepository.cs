@@ -3,16 +3,14 @@ using Catalog.Service.Entities;
 
 namespace Catalog.Service.Repositories
 {
-    public class ItemsRepository
+    public class ItemsRepository : IItemsRepository
     {
         private const string collectionName = "items";
         private readonly IMongoCollection<Item> _dbCollection;
         private readonly FilterDefinitionBuilder<Item> _filterBuilder = Builders<Item>.Filter;
 
-        public ItemsRepository()
+        public ItemsRepository(IMongoDatabase database)
         {
-            var mongoClient = new MongoClient("mongodb://localhost:27017");
-            var database = mongoClient.GetDatabase("Catalog");
             _dbCollection = database.GetCollection<Item>(collectionName);
         }
 
