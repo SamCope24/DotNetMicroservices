@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using Catlog.Service.Settings;
 using MongoDB.Driver;
 using Catalog.Service.Repositories;
+using Catalog.Service.Entities;
 
 ServiceSettings serviceSettings;
 
@@ -23,7 +24,11 @@ builder.Services.AddSingleton(serviceProvider => {
     return mongoClient.GetDatabase(serviceSettings.ServiceName);
 });
 
-builder.Services.AddSingleton<IItemsRepository, ItemsRepository>();
+builder.Services.AddSingleton<IRepository<Item>>(serviceProvider =>
+{
+    var database = serviceProvider.GetService<IMongoDatabase>();
+    return new MongoRepository<Item>(database, "items");
+});
 
 // Register mongodb serializers
 BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
