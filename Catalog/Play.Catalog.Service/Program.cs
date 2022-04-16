@@ -1,5 +1,5 @@
-using Catalog.Service.Repositories;
-using Catalog.Service.Entities;
+using Play.Catalog.Service.Repositories;
+using Play.Catalog.Service.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 

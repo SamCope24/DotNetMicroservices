@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Catalog.Service.Dtos
+namespace Play.Catalog.Service.Dtos
 {
     public record UpdateItemDto
     (

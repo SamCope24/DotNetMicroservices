@@ -1,10 +1,10 @@
-using Catalog.Service.Dtos;
-using Catalog.Service.Entities;
-using Catalog.Service.Extensions;
-using Catalog.Service.Repositories;
+using Play.Catalog.Service.Dtos;
+using Play.Catalog.Service.Entities;
+using Play.Catalog.Service.Extensions;
+using Play.Catalog.Service.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Catlog.Service.Controllers
+namespace Play.Catalog.Service.Controllers
 {
     [ApiController]
     [Route("items")]

@@ -1,6 +1,6 @@
-using Catalog.Service.Entities;
+using Play.Catalog.Service.Entities;
 
-namespace Catalog.Service.Repositories
+namespace Play.Catalog.Service.Repositories
 {
     public interface IRepository<T> where T : IEntity
     {

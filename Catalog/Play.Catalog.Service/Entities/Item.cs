@@ -1,4 +1,4 @@
-namespace Catalog.Service.Entities
+namespace Play.Catalog.Service.Entities
 {
     public class Item : IEntity
     {

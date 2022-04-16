@@ -1,7 +1,7 @@
-using Catalog.Service.Dtos;
-using Catalog.Service.Entities;
+using Play.Catalog.Service.Dtos;
+using Play.Catalog.Service.Entities;
 
-namespace Catalog.Service.Extensions
+namespace Play.Catalog.Service.Extensions
 {
     public static class Extensions
     {

@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Catlog.Service": {
+    "Catalog.Service": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

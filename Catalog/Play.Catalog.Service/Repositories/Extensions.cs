@@ -1,11 +1,11 @@
-using Catalog.Service.Entities;
-using Catlog.Service.Settings;
+using Play.Catalog.Service.Entities;
+using Play.Catalog.Service.Settings;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
-namespace Catalog.Service.Repositories
+namespace Play.Catalog.Service.Repositories
 {
     public static class Extensions
     {
